@@ -1,6 +1,5 @@
 package I5.webserver.domain.Defect.Entity;
 
-import I5.webserver.domain.Picture.Entity.Picture;
 import I5.webserver.domain.PictureDefect.Entity.PictureDefect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
