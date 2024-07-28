@@ -2,7 +2,6 @@ package I5.webserver.domain.Picture.Entity;
 
 import I5.webserver.domain.Battery.Entity.Battery;
 import I5.webserver.domain.Defect.Entity.Defect;
-import I5.webserver.domain.PictureDefect.Entity.PictureDefect;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"battery_id", "camera_number"})})
 public class Picture {
 
     @Id
@@ -43,6 +45,6 @@ public class Picture {
     private Integer cameraNumber;
 
     @OneToMany(mappedBy = "picture")
-    private List<PictureDefect> pictureDefects;
+    private List<Defect> Defects;
 
 }
