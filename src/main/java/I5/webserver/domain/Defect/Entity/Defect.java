@@ -1,20 +1,20 @@
 package I5.webserver.domain.Defect.Entity;
 
-import I5.webserver.domain.PictureDefect.Entity.PictureDefect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import I5.webserver.domain.Battery.Entity.Battery;
+import I5.webserver.domain.Picture.Entity.Picture;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -43,8 +43,10 @@ public class Defect {
     @Column(nullable = false)
     private String yMax;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "defect")
-    private List<PictureDefect> pictures;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Battery battery;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Picture picture;
 
 }
