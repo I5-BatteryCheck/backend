@@ -1,9 +1,9 @@
-package I5.webserver.domain.PictureDefect.Entity;
+package I5.webserver.global.common.file.entity;
 
-import I5.webserver.domain.Defect.Entity.Defect;
 import I5.webserver.domain.Picture.Entity.Picture;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,24 +15,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class PictureDefect {
+public class UploadedFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Embedded
+    private FileName fileName;
+
+    @Column(nullable = false)
+    private long size;
+
+    @Column(nullable = false)
+    private String mimeType;
+
+    @ManyToOne
     @JoinColumn(name = "picture_id")
     private Picture picture;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "defect_id")
-    private Defect defect;
 
 }
