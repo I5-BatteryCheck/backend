@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.DecimalFormat;
+
 @Getter
 @Setter
 @Builder
@@ -26,5 +28,22 @@ public class BatteryConditionResponseDto {
                 .humidity(battery.getHumidity())
                 .illuminance(battery.getIlluminance())
                 .build();
+    }
+
+    public Double getTemperature() {
+        return formatDecimal(temperature);
+    }
+
+    public Double getHumidity() {
+        return formatDecimal(humidity);
+    }
+
+    public Double getIlluminance() {
+        return formatDecimal(illuminance);
+    }
+
+    private Double formatDecimal(Double value) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        return Double.valueOf(df.format(value));
     }
 }

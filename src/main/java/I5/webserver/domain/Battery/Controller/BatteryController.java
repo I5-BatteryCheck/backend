@@ -1,6 +1,5 @@
 package I5.webserver.domain.Battery.Controller;
 
-import I5.webserver.domain.Defect.Dto.response.BatteryDefectTypeResponseDto;
 import I5.webserver.domain.Battery.Dto.response.BatteryResponseDto;
 import I5.webserver.domain.Battery.Service.BatteryService;
 import I5.webserver.domain.Battery.Dto.response.BatteryConditionResponseDto;
@@ -47,15 +46,19 @@ public class BatteryController {
         return ApiResponse.success(batteryCondition);
     }
 
+    @GetMapping("/condition/date")
+    @Operation(summary = "기간별 배터리 온도, 습도, 조도 조회", description = "배터리 촬영 당시의 온도, 습도, 조도 조회(기간별 평균) /날짜 예시 : 2024-07-28T00:00:00")
+    public ApiResponse<BatteryConditionResponseDto> getBatteryConditionAverage(
+            @RequestParam(name = "startDate") LocalDateTime startDate,
+            @RequestParam(name = "endDate") LocalDateTime endDate
+    ) {
+        BatteryConditionResponseDto batteryConditionAverage = batteryService.findBatteryConditionAverage(startDate, endDate);
+        return ApiResponse.success(batteryConditionAverage);
+    }
+
     @GetMapping("/productCount/date")
     @Operation(summary = "기간별 생산량 조회", description = "기간별 생산량을 조회합니다. /날짜 예시 : 2024-07-28T00:00:00")
     public ApiResponse<Long> getProductCountByDate(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
         return ApiResponse.success(batteryService.findProductCountByDate(startDate, endDate));
     }
-
-//    @GetMapping("/defectType/date")
-//    @Operation(summary = "기간별 불량 유형 개수 조회", description = "기간별 불량 유형의 개수를 조회합니다. /날짜 예시 : 2024-07-28T00:00:00")
-//    public ApiResponse<BatteryDefectTypeResponseDto> getDefectTypeCountByDate(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-//
-//    }
 }

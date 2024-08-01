@@ -1,6 +1,5 @@
 package I5.webserver.domain.Battery.Service;
 
-import I5.webserver.domain.Defect.Dto.response.BatteryDefectTypeResponseDto;
 import I5.webserver.domain.Battery.Entity.Battery;
 import I5.webserver.domain.Battery.Entity.Result;
 import I5.webserver.domain.Battery.Repository.BatteryRepository;
@@ -57,8 +56,11 @@ public class BatteryService {
         return batteryRepository.countByTestDateBetween(startDate, endDate);
     }
 
-//    public BatteryDefectTypeResponseDto findDefectTypeCountByDate(LocalDateTime startDate, LocalDateTime endDate) {
-//
-//    }
+    public Long countAll() {
+        return batteryRepository.count();
+    }
 
+    public BatteryConditionResponseDto findBatteryConditionAverage(LocalDateTime startDate, LocalDateTime endDate) {
+        return batteryRepository.findBatteryConditionAverage(startDate, endDate);
+    }
 }
