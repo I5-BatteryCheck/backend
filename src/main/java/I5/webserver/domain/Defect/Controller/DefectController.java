@@ -1,9 +1,11 @@
 package I5.webserver.domain.Defect.Controller;
 
 import I5.webserver.domain.Defect.Dto.response.BatteryDefectTypeResponseDto;
+import I5.webserver.domain.Defect.Dto.response.DefectRateResponseDto;
 import I5.webserver.domain.Defect.Service.DefectService;
 import I5.webserver.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/defect")
+@Tag(name = "Defect", description = "불량 관련 조회")
 public class DefectController {
 
     private final DefectService defectService;
@@ -28,4 +31,10 @@ public class DefectController {
         return ApiResponse.success(dto);
     }
 
+    @GetMapping("/rate")
+    @Operation(summary = "불량 비율 조회", description = "파손, 오염, 복합으로 나뉜 전체 불량 비율을 조회합니다.")
+    public ApiResponse<DefectRateResponseDto> getDefectRate() {
+        DefectRateResponseDto defectRate = defectService.getDefectRate();
+        return ApiResponse.success(defectRate);
+    }
 }
