@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +29,17 @@ public class DefectService {
         return defectRepository.save(defect).getId();
     }
 
-    public Map<String, Long> countDefectTypeByDate(LocalDateTime startDate, LocalDateTime endDate) {
-        List<Defect> allDefects = defectRepository.findByBatteryTestDateBetween(startDate, endDate);
-        return getDefectsCount(allDefects);
+    public Map<Integer, Map<String, Long>> countDefectTypeRecent5days() {
+        Map<Integer, Map<String, Long>> resultMap = new HashMap<>();
+        LocalDateTime endDate = LocalDateTime.now();
+        IntStream.rangeClosed(1, 5).forEach(day -> {
+            LocalDateTime startDate = endDate.minusDays(day);
+            LocalDateTime currentEndDate = endDate.minusDays(day - 1);
+            List<Defect> defects = defectRepository.findByBatteryTestDateBetween(startDate, currentEndDate);
+            Map<String, Long> defectsCount = getDefectsCount(defects);
+            resultMap.put(day, defectsCount);
+        });
+        return resultMap;
     }
 
     private static Map<String, Long> getDefectsCount(List<Defect> allDefects) {

@@ -1,5 +1,6 @@
 package I5.webserver.domain.Picture.Repository;
 
+import I5.webserver.domain.Battery.Entity.Result;
 import I5.webserver.domain.Defect.Entity.Type;
 import I5.webserver.domain.Picture.Entity.Picture;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,11 +21,13 @@ public interface PictureRepository extends JpaRepository<Picture, Long> {
             "LEFT JOIN p.Defects d " +
             "WHERE (:startDate IS NULL OR b.testDate >= :startDate) " +
             "AND (:endDate IS NULL OR b.testDate <= :endDate) " +
-            "AND (:type IS NULL OR d.type = :type) " +
+            "AND (:types IS NULL OR d.type IN :types) " +
+            "AND (:results IS NULL OR b.result IN :results) " +
             "AND (:cameraNumber IS NULL OR p.cameraNumber = :cameraNumber)")
     List<Picture> findAllByFilters(@Param("startDate") LocalDateTime startDate,
                                    @Param("endDate") LocalDateTime endDate,
-                                   @Param("type") Type type,
+                                   @Param("results") List<Result> results,
+                                   @Param("types") List<Type> types,
                                    @Param("cameraNumber") Integer cameraNumber);
 
 }

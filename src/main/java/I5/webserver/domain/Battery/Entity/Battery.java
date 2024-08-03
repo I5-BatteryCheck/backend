@@ -37,4 +37,7 @@ public class Battery {
     @Column(nullable = false)
     private Double illuminance;
 
+    @Column(nullable = false)
+    private Double defectLevel;
+
 }
