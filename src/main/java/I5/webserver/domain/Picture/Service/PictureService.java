@@ -1,5 +1,6 @@
 package I5.webserver.domain.Picture.Service;
 
+import I5.webserver.domain.Battery.Entity.Result;
 import I5.webserver.domain.Defect.Entity.Defect;
 import I5.webserver.domain.Defect.Entity.Type;
 import I5.webserver.domain.Picture.Dto.response.PictureFilterResponseDto;
@@ -30,8 +31,15 @@ public class PictureService {
     }
 
     @Transactional
-    public List<PictureFilterResponseDto> getStatistics(LocalDateTime startDate, LocalDateTime endDate, Type type, Integer cameraNumber) {
-        List<Picture> pictures = pictureRepository.findAllByFilters(startDate, endDate, type, cameraNumber);
+    public List<PictureFilterResponseDto> getStatistics(LocalDateTime startDate, LocalDateTime endDate, List<Result> results, List<Type> types, Integer cameraNumber) {
+        System.out.println(results);
+        if (results != null && results.isEmpty()) {
+            results = null;
+        }
+        if (types != null && types.isEmpty()) {
+            types = null;
+        }
+        List<Picture> pictures = pictureRepository.findAllByFilters(startDate, endDate, results, types, cameraNumber);
         List<PictureFilterResponseDto> responseDtos = new ArrayList<>();
         for (Picture picture : pictures) {
             PictureFilterResponseDto dto = new PictureFilterResponseDto(
@@ -39,9 +47,9 @@ public class PictureService {
                     picture.getBattery().getId(),
                     picture.getBattery().getTestDate(),
                     picture.getBattery().getResult(),
-                    picture.getDefects().stream().map(Defect::getType).collect(Collectors.toList()),
+                    picture.getDefects().stream().map(Defect::getType).distinct().collect(Collectors.toList()),
                     picture.getCameraNumber(),
-                    null
+                    picture.getBattery().getDefectLevel()
             );
             responseDtos.add(dto);
         }

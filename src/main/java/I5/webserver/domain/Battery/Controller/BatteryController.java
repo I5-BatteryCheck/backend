@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,11 +33,15 @@ public class BatteryController {
     }
 
     @GetMapping("/defectRatio/date")
-    @Operation(summary = "기간별 불량 비율 조회", description = "기간별 배터리의 불량 비율을 조회합니다. /날짜 예시 : 2024-07-28T00:00:00")
-    private ApiResponse<BatteryResponseDto> searchDefectRatioByDate(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        String normalRatio = String.format("%.1f", batteryService.calculateNormalRatioByDate(startDate, endDate));
-        String defectRatio = String.format("%.1f", (100 - Double.parseDouble(normalRatio)));
-        return ApiResponse.success(new BatteryResponseDto(normalRatio, defectRatio));
+    @Operation(summary = "최근 5일간 불량 비율 조회", description = "최근 5일의 배터리의 불량 비율을 조회합니다.")
+    private ApiResponse<List<BatteryResponseDto>> searchDefectRatioByDate() {
+        List<BatteryResponseDto> result = new ArrayList<>();
+        for(int i = 1; i <= 5; i++) {
+            String normalRatio = String.format("%.1f", batteryService.calculateNormalRatioRecent5days().get(i));
+            String defectRatio = String.format("%.1f", (100 - Double.parseDouble(normalRatio)));
+            result.add(new BatteryResponseDto(normalRatio, defectRatio));
+        }
+        return ApiResponse.success(result);
     }
 
     @GetMapping("/condition")
@@ -47,18 +53,24 @@ public class BatteryController {
     }
 
     @GetMapping("/condition/date")
-    @Operation(summary = "기간별 배터리 온도, 습도, 조도 조회", description = "배터리 촬영 당시의 온도, 습도, 조도 조회(기간별 평균) /날짜 예시 : 2024-07-28T00:00:00")
-    public ApiResponse<BatteryConditionResponseDto> getBatteryConditionAverage(
-            @RequestParam(name = "startDate") LocalDateTime startDate,
-            @RequestParam(name = "endDate") LocalDateTime endDate
-    ) {
-        BatteryConditionResponseDto batteryConditionAverage = batteryService.findBatteryConditionAverage(startDate, endDate);
-        return ApiResponse.success(batteryConditionAverage);
+    @Operation(summary = "최근 5일간 배터리 온도, 습도, 조도 조회", description = "배터리 촬영 당시의 온도, 습도, 조도 조회(평균)")
+    public ApiResponse<List<BatteryConditionResponseDto>> getBatteryConditionAverage() {
+        Map<Integer, BatteryConditionResponseDto> batteryConditionAverageRecent5days = batteryService.findBatteryConditionAverageRecent5days();
+        List<BatteryConditionResponseDto> result = new ArrayList<>();
+        for(int i = 1; i <= 5; i++) {
+            result.add(batteryConditionAverageRecent5days.get(i));
+        }
+        return ApiResponse.success(result);
     }
 
     @GetMapping("/productCount/date")
-    @Operation(summary = "기간별 생산량 조회", description = "기간별 생산량을 조회합니다. /날짜 예시 : 2024-07-28T00:00:00")
-    public ApiResponse<Long> getProductCountByDate(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        return ApiResponse.success(batteryService.findProductCountByDate(startDate, endDate));
+    @Operation(summary = "최근 5일간 생산량 조회", description = "최근 5일간 생산량을 조회합니다.")
+    public ApiResponse<List<Long>> getProductCountRecent5days() {
+        Map<Integer, Long> productCountRecent5days = batteryService.findProductCountRecent5days();
+        List<Long> result = new ArrayList<>();
+        for(int i = 1; i <= 5; i++) {
+            result.add(productCountRecent5days.get(i));
+        }
+        return ApiResponse.success(result);
     }
 }

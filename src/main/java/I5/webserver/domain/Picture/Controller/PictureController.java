@@ -1,5 +1,6 @@
 package I5.webserver.domain.Picture.Controller;
 
+import I5.webserver.domain.Battery.Entity.Result;
 import I5.webserver.domain.Defect.Entity.Type;
 import I5.webserver.domain.Picture.Dto.response.PictureFilterResponseDto;
 import I5.webserver.domain.Picture.Dto.response.PictureWebResponseDto;
@@ -59,10 +60,11 @@ public class PictureController {
     public ApiResponse<List<PictureFilterResponseDto>> getStatistics(
             @RequestParam(name = "startDate", required = false) LocalDateTime startDate,
             @RequestParam(name = "endDate", required = false) LocalDateTime endDate,
-            @RequestParam(name = "type", required = false) Type type,
+            @RequestParam(name = "results", required = false) List<Result> results,
+            @RequestParam(name = "types", required = false) List<Type> types,
             @RequestParam(name = "cameraNumber", required = false) Integer cameraNumber
     ) {
-        List<PictureFilterResponseDto> statistics = pictureService.getStatistics(startDate, endDate, type, cameraNumber);
+        List<PictureFilterResponseDto> statistics = pictureService.getStatistics(startDate, endDate, results, types, cameraNumber);
         return ApiResponse.success(statistics);
     }
 }
