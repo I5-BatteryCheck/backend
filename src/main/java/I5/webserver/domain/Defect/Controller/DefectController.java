@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,11 +24,20 @@ public class DefectController {
     private final DefectService defectService;
 
     @GetMapping("/date")
-    @Operation(summary = "기간별 불량 유형 개수 조회", description = "기간별 불량 유형의 개수를 조회합니다. /날짜 예시 : 2024-07-28T00:00:00")
-    public ApiResponse<BatteryDefectTypeResponseDto> getDefectTypeCountByDate(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        Map<String, Long> defectTypeCountMap = defectService.countDefectTypeByDate(startDate, endDate);
-        BatteryDefectTypeResponseDto dto = new BatteryDefectTypeResponseDto(defectTypeCountMap.get("pollution"), defectTypeCountMap.get("damaged"), defectTypeCountMap.get("both"));
-        return ApiResponse.success(dto);
+    @Operation(summary = "최근 5일간 불량 유형 개수 조회", description = "최근 5일간 불량 유형의 개수를 조회합니다.")
+    public ApiResponse<List<BatteryDefectTypeResponseDto>> getDefectTypeCountByDate() {
+        Map<Integer, Map<String, Long>> defectTypeCountMap = defectService.countDefectTypeRecent5days();
+        List<BatteryDefectTypeResponseDto> dtos = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            Map<String, Long> defectCounts = defectTypeCountMap.get(i);
+            BatteryDefectTypeResponseDto dto = new BatteryDefectTypeResponseDto(
+                    defectCounts.getOrDefault("pollution", 0L),
+                    defectCounts.getOrDefault("damaged", 0L),
+                    defectCounts.getOrDefault("both", 0L)
+            );
+            dtos.add(dto);
+        }
+        return ApiResponse.success(dtos);
     }
 
     @GetMapping("/rate")

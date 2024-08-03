@@ -28,6 +28,8 @@ public class FileRequestDto {
 
     private Double illuminance;
 
+    private Double defectLevel;
+
     private List<CameraDefectsDto> cameraDefects;
 
 }
