@@ -13,7 +13,6 @@ import java.text.DecimalFormat;
 @Setter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class BatteryConditionResponseDto {
 
     private Double temperature;
@@ -21,6 +20,12 @@ public class BatteryConditionResponseDto {
     private Double humidity;
 
     private Double illuminance;
+
+    public BatteryConditionResponseDto(Double temperature, Double humidity, Double illuminance) {
+        this.temperature = temperature != null ? temperature : 0.0;
+        this.humidity = humidity != null ? humidity : 0.0;
+        this.illuminance = illuminance != null ? illuminance : 0.0;
+    }
 
     public static BatteryConditionResponseDto toDto(Battery battery) {
         return BatteryConditionResponseDto.builder()
