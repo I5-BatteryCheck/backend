@@ -31,15 +31,14 @@ public class PictureService {
     }
 
     @Transactional
-    public List<PictureFilterResponseDto> getStatistics(LocalDateTime startDate, LocalDateTime endDate, List<Result> results, List<Type> types, Integer cameraNumber) {
-        System.out.println(results);
+    public List<PictureFilterResponseDto> getStatistics(LocalDateTime startDate, LocalDateTime endDate, List<Result> results, List<Type> types, List<Integer> cameraNumbers) {
         if (results != null && results.isEmpty()) {
             results = null;
         }
         if (types != null && types.isEmpty()) {
             types = null;
         }
-        List<Picture> pictures = pictureRepository.findAllByFilters(startDate, endDate, results, types, cameraNumber);
+        List<Picture> pictures = pictureRepository.findAllByFilters(startDate, endDate, results, types, cameraNumbers);
         List<PictureFilterResponseDto> responseDtos = new ArrayList<>();
         for (Picture picture : pictures) {
             PictureFilterResponseDto dto = new PictureFilterResponseDto(
@@ -49,7 +48,8 @@ public class PictureService {
                     picture.getBattery().getResult(),
                     picture.getDefects().stream().map(Defect::getType).distinct().collect(Collectors.toList()),
                     picture.getCameraNumber(),
-                    picture.getBattery().getDefectLevel()
+                    picture.getBattery().getDamagedLevel(),
+                    picture.getBattery().getPollutionLevel()
             );
             responseDtos.add(dto);
         }

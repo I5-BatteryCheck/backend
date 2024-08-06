@@ -23,11 +23,11 @@ public interface PictureRepository extends JpaRepository<Picture, Long> {
             "AND (:endDate IS NULL OR b.testDate <= :endDate) " +
             "AND (:types IS NULL OR d.type IN :types) " +
             "AND (:results IS NULL OR b.result IN :results) " +
-            "AND (:cameraNumber IS NULL OR p.cameraNumber = :cameraNumber)")
+            "AND (:cameraNumbers IS NULL OR p.cameraNumber IN :cameraNumbers)")
     List<Picture> findAllByFilters(@Param("startDate") LocalDateTime startDate,
                                    @Param("endDate") LocalDateTime endDate,
                                    @Param("results") List<Result> results,
                                    @Param("types") List<Type> types,
-                                   @Param("cameraNumber") Integer cameraNumber);
+                                   @Param("cameraNumbers") List<Integer> cameraNumbers);
 
 }

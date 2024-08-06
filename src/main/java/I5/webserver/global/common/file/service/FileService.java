@@ -45,7 +45,8 @@ public class FileService {
                     .humidity(requestDto.getHumidity())
                     .illuminance(requestDto.getIlluminance())
                     .temperature(requestDto.getTemperature())
-                    .defectLevel(requestDto.getDefectLevel())
+                    .pollutionLevel(requestDto.getPollutionLevel())
+                    .damagedLevel(requestDto.getDamagedLevel())
                     .build();
             batteryService.save(battery);
         }
