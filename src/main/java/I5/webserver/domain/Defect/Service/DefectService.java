@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class DefectService {
 
     public Map<Integer, Map<String, Long>> countDefectTypeRecent5days() {
         Map<Integer, Map<String, Long>> resultMap = new HashMap<>();
-        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDate.now().atStartOfDay();
         IntStream.rangeClosed(1, 5).forEach(day -> {
             LocalDateTime startDate = endDate.minusDays(day);
             LocalDateTime currentEndDate = endDate.minusDays(day - 1);

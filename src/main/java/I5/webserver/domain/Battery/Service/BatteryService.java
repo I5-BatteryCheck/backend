@@ -52,7 +52,7 @@ public class BatteryService {
 
     public Map<Integer, Double> calculateNormalRatioRecent5days() {
         Map<Integer, Double> resultMap = new HashMap<>();
-        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDate.now().atStartOfDay();
         IntStream.rangeClosed(1, 5).forEach(day -> {
             LocalDateTime startDate = endDate.minusDays(day);
             LocalDateTime currentEndDate = endDate.minusDays(day - 1);
@@ -68,7 +68,7 @@ public class BatteryService {
 
     public Map<Integer, Long> findProductCountRecent5days() {
         Map<Integer, Long> resultMap = new HashMap<>();
-        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDate.now().atStartOfDay();
         IntStream.rangeClosed(1, 5).forEach(day -> {
             LocalDateTime startDate = endDate.minusDays(day);
             LocalDateTime currentEndDate = endDate.minusDays(day - 1);
@@ -83,7 +83,7 @@ public class BatteryService {
 
     public Map<Integer, BatteryConditionDailyResponseDto> findBatteryConditionAverageRecent5days() {
         Map<Integer, BatteryConditionDailyResponseDto> resultMap = new HashMap<>();
-        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDate.now().atStartOfDay();
         LocalDate localDate = endDate.toLocalDate();
         IntStream.rangeClosed(1, 5).forEach(day -> {
             LocalDateTime startDate = endDate.minusDays(day);
