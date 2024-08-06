@@ -1,15 +1,17 @@
 package I5.webserver.domain.Battery.Service;
 
+import I5.webserver.domain.Battery.Dto.response.BatteryConditionDailyResponseDto;
 import I5.webserver.domain.Battery.Entity.Battery;
 import I5.webserver.domain.Battery.Entity.Result;
 import I5.webserver.domain.Battery.Repository.BatteryRepository;
 import I5.webserver.domain.Battery.Dto.response.BatteryConditionResponseDto;
-import I5.webserver.domain.Defect.Entity.Defect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,15 +81,26 @@ public class BatteryService {
         return batteryRepository.count();
     }
 
-    public Map<Integer, BatteryConditionResponseDto> findBatteryConditionAverageRecent5days() {
-        Map<Integer, BatteryConditionResponseDto> resultMap = new HashMap<>();
+    public Map<Integer, BatteryConditionDailyResponseDto> findBatteryConditionAverageRecent5days() {
+        Map<Integer, BatteryConditionDailyResponseDto> resultMap = new HashMap<>();
         LocalDateTime endDate = LocalDateTime.now();
+        LocalDate localDate = endDate.toLocalDate();
         IntStream.rangeClosed(1, 5).forEach(day -> {
             LocalDateTime startDate = endDate.minusDays(day);
             LocalDateTime currentEndDate = endDate.minusDays(day - 1);
             BatteryConditionResponseDto batteryConditionAverage = batteryRepository.findBatteryConditionAverage(startDate, currentEndDate);
-            resultMap.put(day, batteryConditionAverage);
+            BatteryConditionDailyResponseDto batteryConditionDailyResponseDto = new BatteryConditionDailyResponseDto(localDate.minusDays(day), batteryConditionAverage.getTemperature(), batteryConditionAverage.getHumidity(), batteryConditionAverage.getIlluminance());
+            resultMap.put(day, batteryConditionDailyResponseDto);
         });
         return resultMap;
+    }
+
+    public List<LocalDate> findRecent5Dates() {
+        List<LocalDate> recentDates = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        for (int i = 1; i <= 5; i++) {
+            recentDates.add(today.minusDays(i));
+        }
+        return recentDates;
     }
 }

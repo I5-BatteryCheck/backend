@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +29,11 @@ public class DefectController {
     public ApiResponse<List<BatteryDefectTypeResponseDto>> getDefectTypeCountByDate() {
         Map<Integer, Map<String, Long>> defectTypeCountMap = defectService.countDefectTypeRecent5days();
         List<BatteryDefectTypeResponseDto> dtos = new ArrayList<>();
+        LocalDate now = LocalDate.now();
         for (int i = 1; i <= 5; i++) {
             Map<String, Long> defectCounts = defectTypeCountMap.get(i);
             BatteryDefectTypeResponseDto dto = new BatteryDefectTypeResponseDto(
+                    now.minusDays(i),
                     defectCounts.getOrDefault("pollution", 0L),
                     defectCounts.getOrDefault("damaged", 0L),
                     defectCounts.getOrDefault("both", 0L)
