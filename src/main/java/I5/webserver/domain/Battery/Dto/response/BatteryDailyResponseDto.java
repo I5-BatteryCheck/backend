@@ -1,4 +1,4 @@
-package I5.webserver.domain.Defect.Dto.response;
+package I5.webserver.domain.Battery.Dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-public class BatteryDefectTypeResponseDto {
+public class BatteryDailyResponseDto {
 
     private LocalDate localDate;
-    private Long pollution;
-    private Long damaged;
-    private Long both;
+
+    private String normalRatio;
+
+    private String defectRatio;
 }
