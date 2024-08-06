@@ -62,9 +62,9 @@ public class PictureController {
             @RequestParam(name = "endDate", required = false) LocalDateTime endDate,
             @RequestParam(name = "results", required = false) List<Result> results,
             @RequestParam(name = "types", required = false) List<Type> types,
-            @RequestParam(name = "cameraNumber", required = false) Integer cameraNumber
+            @RequestParam(name = "cameraNumber", required = false) List<Integer> cameraNumbers
     ) {
-        List<PictureFilterResponseDto> statistics = pictureService.getStatistics(startDate, endDate, results, types, cameraNumber);
+        List<PictureFilterResponseDto> statistics = pictureService.getStatistics(startDate, endDate, results, types, cameraNumbers);
         return ApiResponse.success(statistics);
     }
 }

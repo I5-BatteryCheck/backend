@@ -28,7 +28,9 @@ public class FileRequestDto {
 
     private Double illuminance;
 
-    private Double defectLevel;
+    private Double damagedLevel;
+
+    private Double pollutionLevel;
 
     private List<CameraDefectsDto> cameraDefects;
 

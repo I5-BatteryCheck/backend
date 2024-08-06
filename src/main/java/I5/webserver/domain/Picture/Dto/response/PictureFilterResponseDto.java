@@ -20,5 +20,6 @@ public class PictureFilterResponseDto {
     private Result result;
     private List<Type> type;
     private Integer cameraNumber;
-    private Double defectLevel;
+    private Double damagedLevel;
+    private Double pollutionLevel;
 }

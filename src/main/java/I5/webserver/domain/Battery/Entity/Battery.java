@@ -2,6 +2,8 @@ package I5.webserver.domain.Battery.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +40,8 @@ public class Battery {
     private Double illuminance;
 
     @Column(nullable = false)
-    private Double defectLevel;
+    private Double damagedLevel;
 
+    @Column(nullable = false)
+    private Double pollutionLevel;
 }
