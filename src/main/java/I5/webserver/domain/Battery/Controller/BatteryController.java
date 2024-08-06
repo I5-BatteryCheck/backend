@@ -73,7 +73,7 @@ public class BatteryController {
     public ApiResponse<List<BatteryDailyCountResponseDto>> getProductCountRecent5days() {
         Map<Integer, Long> productCountRecent5days = batteryService.findProductCountRecent5days();
         List<BatteryDailyCountResponseDto> result = new ArrayList<>();
-        for(int i = 5; i >= 5; i--) {
+        for(int i = 5; i >= 1; i--) {
             LocalDate date = batteryService.findRecent5Dates().get(i - 1);
             BatteryDailyCountResponseDto dto = new BatteryDailyCountResponseDto(date, productCountRecent5days.get(i));
             result.add(dto);
