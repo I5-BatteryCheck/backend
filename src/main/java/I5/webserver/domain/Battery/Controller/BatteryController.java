@@ -40,7 +40,7 @@ public class BatteryController {
     @Operation(summary = "최근 5일간 불량 비율 조회", description = "최근 5일의 배터리의 불량 비율을 조회합니다.")
     private ApiResponse<List<BatteryDailyResponseDto>> searchDefectRatioByDate() {
         List<BatteryDailyResponseDto> result = new ArrayList<>();
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 5; i >= 1; i--) {
             LocalDate date = batteryService.findRecent5Dates().get(i - 1);
             String normalRatio = String.format("%.1f", batteryService.calculateNormalRatioRecent5days().get(i));
             String defectRatio = String.format("%.1f", (100 - Double.parseDouble(normalRatio)));
@@ -62,7 +62,7 @@ public class BatteryController {
     public ApiResponse<List<BatteryConditionDailyResponseDto>> getBatteryConditionAverage() {
         Map<Integer, BatteryConditionDailyResponseDto> batteryConditionAverageRecent5days = batteryService.findBatteryConditionAverageRecent5days();
         List<BatteryConditionDailyResponseDto> result = new ArrayList<>();
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 5; i >= 1; i--) {
             result.add(batteryConditionAverageRecent5days.get(i));
         }
         return ApiResponse.success(result);
@@ -73,7 +73,7 @@ public class BatteryController {
     public ApiResponse<List<BatteryDailyCountResponseDto>> getProductCountRecent5days() {
         Map<Integer, Long> productCountRecent5days = batteryService.findProductCountRecent5days();
         List<BatteryDailyCountResponseDto> result = new ArrayList<>();
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 5; i >= 5; i--) {
             LocalDate date = batteryService.findRecent5Dates().get(i - 1);
             BatteryDailyCountResponseDto dto = new BatteryDailyCountResponseDto(date, productCountRecent5days.get(i));
             result.add(dto);

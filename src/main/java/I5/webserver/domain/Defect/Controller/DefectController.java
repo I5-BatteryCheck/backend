@@ -30,7 +30,7 @@ public class DefectController {
         Map<Integer, Map<String, Long>> defectTypeCountMap = defectService.countDefectTypeRecent5days();
         List<BatteryDefectTypeResponseDto> dtos = new ArrayList<>();
         LocalDate now = LocalDate.now();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 5; i >= 5; i--) {
             Map<String, Long> defectCounts = defectTypeCountMap.get(i);
             BatteryDefectTypeResponseDto dto = new BatteryDefectTypeResponseDto(
                     now.minusDays(i),
