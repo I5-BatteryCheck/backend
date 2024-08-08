@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,13 +32,12 @@ public class FileUploadService {
     private String bucket;
 
     public Map<String, File> uploadFiles(List<MultipartFile> files) {
-        return files.stream()
-                .map(this::uploadFile)
-                .flatMap(map -> map.entrySet().stream())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (existing, replacement) -> existing));
+        Map<String, File> result = new LinkedHashMap<>();
+        for(MultipartFile file : files) {
+            Map<String, File> stringFileMap = uploadFile(file);
+            result.putAll(stringFileMap);
+        }
+        return result;
     }
 
     public Map<String, File> uploadFile(MultipartFile file) {

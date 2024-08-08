@@ -49,6 +49,9 @@ public class FileController {
                 .toList();
         List<File> files = uploadedFiles.values().stream()
                 .toList();
+        for(File file : files) {
+            System.out.println(file.getName());
+        }
         try {
             FileDto fileDto = new FileDto(multipartFiles.size(), multipartFiles, savedNames, files);
             Battery battery = batteryService.findLatestBattery();

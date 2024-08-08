@@ -40,6 +40,9 @@ public class Battery {
     private Double illuminance;
 
     @Column(nullable = false)
+    private Double gas;
+
+    @Column(nullable = false)
     private Double damagedLevel;
 
     @Column(nullable = false)
