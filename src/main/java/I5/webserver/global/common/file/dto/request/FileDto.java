@@ -17,6 +17,8 @@ public class FileDto {
 
     private List<MultipartFile> files;
 
+    private List<String> savedName;
+
     private List<File> UploadedFiles;
 
 }

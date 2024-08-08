@@ -92,7 +92,7 @@ public class FileService {
                         .fileName(FileName.builder()
                                 .originalName(origin.getOriginalFilename())
                                 .savedPath(FileUtils.getPathWithoutFileName(copy.getPath()))
-                                .savedName(copy.getName())
+                                .savedName(fileDto.getSavedName().get(sequence))
                                 .extensionName(FileUtils.getExtensionName(origin.getOriginalFilename()))
                                 .build())
                         .mimeType(origin.getContentType())
