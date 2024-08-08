@@ -23,7 +23,7 @@ public interface BatteryRepository extends JpaRepository<Battery, Long> {
     @Query("SELECT COUNT(b) FROM Battery b WHERE b.result = :result AND b.testDate BETWEEN :startDate AND :endDate")
     Long countByResultAndTestDateBetween(@Param("result") Result result, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT new I5.webserver.domain.Battery.Dto.response.BatteryConditionResponseDto(AVG(b.temperature), AVG(b.humidity), AVG(b.illuminance)) " +
+    @Query("SELECT new I5.webserver.domain.Battery.Dto.response.BatteryConditionResponseDto(AVG(b.temperature), AVG(b.humidity), AVG(b.illuminance), AVG(b.gas)) " +
             "FROM Battery b " +
             "WHERE b.testDate >= :startDate AND b.testDate <= :endDate")
     BatteryConditionResponseDto findBatteryConditionAverage(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);

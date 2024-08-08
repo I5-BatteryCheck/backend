@@ -58,7 +58,7 @@ public class BatteryController {
     }
 
     @GetMapping("/condition/date")
-    @Operation(summary = "최근 5일간 배터리 온도, 습도, 조도 조회", description = "배터리 촬영 당시의 온도, 습도, 조도 조회(평균)")
+    @Operation(summary = "최근 5일간 배터리 온도, 습도, 조도, 가스 조회", description = "배터리 촬영 당시의 온도, 습도, 조도, 가스 조회(평균)")
     public ApiResponse<List<BatteryConditionDailyResponseDto>> getBatteryConditionAverage() {
         Map<Integer, BatteryConditionDailyResponseDto> batteryConditionAverageRecent5days = batteryService.findBatteryConditionAverageRecent5days();
         List<BatteryConditionDailyResponseDto> result = new ArrayList<>();
