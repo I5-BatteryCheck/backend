@@ -45,6 +45,7 @@ public class FileService {
                     .humidity(requestDto.getHumidity())
                     .illuminance(requestDto.getIlluminance())
                     .temperature(requestDto.getTemperature())
+                    .gas(requestDto.getGas())
                     .pollutionLevel(requestDto.getPollutionLevel())
                     .damagedLevel(requestDto.getDamagedLevel())
                     .build();

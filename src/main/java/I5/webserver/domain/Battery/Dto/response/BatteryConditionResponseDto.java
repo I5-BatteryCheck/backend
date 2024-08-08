@@ -21,10 +21,13 @@ public class BatteryConditionResponseDto {
 
     private Double illuminance;
 
-    public BatteryConditionResponseDto(Double temperature, Double humidity, Double illuminance) {
+    private Double gas;
+
+    public BatteryConditionResponseDto(Double temperature, Double humidity, Double illuminance, Double gas) {
         this.temperature = temperature != null ? temperature : 0.0;
         this.humidity = humidity != null ? humidity : 0.0;
         this.illuminance = illuminance != null ? illuminance : 0.0;
+        this.gas = gas != null ? gas : 0.0;
     }
 
     public static BatteryConditionResponseDto toDto(Battery battery) {
@@ -32,6 +35,7 @@ public class BatteryConditionResponseDto {
                 .temperature(battery.getTemperature())
                 .humidity(battery.getHumidity())
                 .illuminance(battery.getIlluminance())
+                .gas(battery.getGas())
                 .build();
     }
 

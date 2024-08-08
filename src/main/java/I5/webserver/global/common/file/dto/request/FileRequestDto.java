@@ -28,6 +28,8 @@ public class FileRequestDto {
 
     private Double illuminance;
 
+    private Double gas;
+
     private Double damagedLevel;
 
     private Double pollutionLevel;

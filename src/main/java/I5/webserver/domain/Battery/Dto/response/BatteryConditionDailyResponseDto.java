@@ -23,19 +23,14 @@ public class BatteryConditionDailyResponseDto {
 
     private Double illuminance;
 
-    public BatteryConditionDailyResponseDto(LocalDate localDate, Double temperature, Double humidity, Double illuminance) {
+    private Double gas;
+
+    public BatteryConditionDailyResponseDto(LocalDate localDate, Double temperature, Double humidity, Double illuminance, Double gas) {
         this.localDate = localDate;
         this.temperature = temperature != null ? temperature : 0.0;
         this.humidity = humidity != null ? humidity : 0.0;
         this.illuminance = illuminance != null ? illuminance : 0.0;
-    }
-
-    public static BatteryConditionResponseDto toDto(Battery battery) {
-        return BatteryConditionResponseDto.builder()
-                .temperature(battery.getTemperature())
-                .humidity(battery.getHumidity())
-                .illuminance(battery.getIlluminance())
-                .build();
+        this.gas = gas != null ? gas : 0.0;
     }
 
     public Double getTemperature() {

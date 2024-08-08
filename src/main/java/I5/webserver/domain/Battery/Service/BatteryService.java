@@ -89,7 +89,7 @@ public class BatteryService {
             LocalDateTime startDate = endDate.minusDays(day);
             LocalDateTime currentEndDate = endDate.minusDays(day - 1);
             BatteryConditionResponseDto batteryConditionAverage = batteryRepository.findBatteryConditionAverage(startDate, currentEndDate);
-            BatteryConditionDailyResponseDto batteryConditionDailyResponseDto = new BatteryConditionDailyResponseDto(localDate.minusDays(day), batteryConditionAverage.getTemperature(), batteryConditionAverage.getHumidity(), batteryConditionAverage.getIlluminance());
+            BatteryConditionDailyResponseDto batteryConditionDailyResponseDto = new BatteryConditionDailyResponseDto(localDate.minusDays(day), batteryConditionAverage.getTemperature(), batteryConditionAverage.getHumidity(), batteryConditionAverage.getIlluminance(), batteryConditionAverage.getGas());
             resultMap.put(day, batteryConditionDailyResponseDto);
         });
         return resultMap;
