@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -44,9 +42,8 @@ public class PictureController {
         List<UploadedFile> images = fileRepository.findRecentThree();
         List<String> encodedImages = new ArrayList<>();
         for (UploadedFile image : images) {
-            Path imagePath = Paths.get(image.getFileName().getSavedPath(), image.getFileName().getSavedName());
-            Path absolutePath = imagePath.toAbsolutePath();
-            byte[] imageByte = fileDownloadService.getImageFile(absolutePath);
+            String s3Path = image.getFileName().getSavedName();
+            byte[] imageByte = fileDownloadService.getImageFile(s3Path);
             String encodedString = Base64.getEncoder().encodeToString(imageByte);
             encodedImages.add(encodedString);
         }

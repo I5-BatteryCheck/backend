@@ -2,10 +2,6 @@ package I5.webserver.global.common.file.controller;
 
 import I5.webserver.domain.Battery.Entity.Battery;
 import I5.webserver.domain.Battery.Service.BatteryService;
-import I5.webserver.domain.Defect.Dto.request.DefectRequestDto;
-import I5.webserver.domain.Picture.Dto.response.PictureResponseDto;
-import I5.webserver.domain.Picture.Entity.Picture;
-import I5.webserver.domain.Picture.Service.PictureService;
 import I5.webserver.global.common.ApiResponse;
 import I5.webserver.global.common.file.dto.request.FileDto;
 import I5.webserver.global.common.file.dto.request.FileRequestDto;
@@ -19,16 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -50,9 +44,13 @@ public class FileController {
             @RequestPart(name = "multipartFile") List<MultipartFile> multipartFiles,
             @RequestPart(name = "content") FileRequestDto fileRequestDto
     ) {
-        List<File> uploadedFiles = new ArrayList<>(fileUploadService.uploadFiles(multipartFiles));
+        Map<String, File> uploadedFiles = fileUploadService.uploadFiles(multipartFiles);
+        List<String> savedNames = uploadedFiles.keySet().stream()
+                .toList();
+        List<File> files = uploadedFiles.values().stream()
+                .toList();
         try {
-            FileDto fileDto = new FileDto(multipartFiles.size(), multipartFiles, uploadedFiles);
+            FileDto fileDto = new FileDto(multipartFiles.size(), multipartFiles, savedNames, files);
             Battery battery = batteryService.findLatestBattery();
             List<Long> savedFileIds;
             if(battery != null) {
@@ -61,11 +59,11 @@ public class FileController {
             }else{
                 savedFileIds = fileService.save(fileDto, fileRequestDto, batteryId);
             }
-            FileResponseDto responseDto = new FileResponseDto(multipartFiles.size(), (int)uploadedFiles.stream().filter(Objects::nonNull).count() , savedFileIds);
+            FileResponseDto responseDto = new FileResponseDto(multipartFiles.size(), (int)files.stream().filter(Objects::nonNull).count() , savedFileIds);
             return ApiResponse.success(responseDto);
         }
         catch (EntityNotFoundException e) {
-            for (File uploadedFile : uploadedFiles) {
+            for (File uploadedFile : files) {
                 if (uploadedFile != null && uploadedFile.exists()) {
                     uploadedFile.delete();
                 }
