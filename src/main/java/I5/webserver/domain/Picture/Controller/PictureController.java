@@ -1,6 +1,7 @@
 package I5.webserver.domain.Picture.Controller;
 
 import I5.webserver.domain.Battery.Entity.Result;
+import I5.webserver.domain.Defect.Entity.Defect;
 import I5.webserver.domain.Defect.Entity.Type;
 import I5.webserver.domain.Picture.Dto.response.PictureFilterResponseDto;
 import I5.webserver.domain.Picture.Dto.response.PictureWebResponseDto;
@@ -49,7 +50,10 @@ public class PictureController {
         }
         Picture picture = images.get(0).getPicture();
         Long batteryId = picture.getBattery().getId();
-        return ApiResponse.success(new PictureWebResponseDto(batteryId, encodedImages));
+        LocalDateTime localDateTime = picture.getBattery().getTestDate();
+        List<Type> defectTypes = picture.getDefects().stream().map(Defect::getType).toList();
+        Result result = picture.getBattery().getResult();
+        return ApiResponse.success(new PictureWebResponseDto(batteryId, encodedImages, defectTypes, localDateTime, result));
     }
 
     @GetMapping("/statistics")

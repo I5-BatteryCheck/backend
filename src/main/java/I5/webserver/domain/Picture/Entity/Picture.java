@@ -44,7 +44,7 @@ public class Picture {
     @Column(nullable = false)
     private Integer cameraNumber;
 
-    @OneToMany(mappedBy = "picture")
+    @OneToMany(mappedBy = "picture", fetch = FetchType.EAGER)
     private List<Defect> Defects;
 
 }
