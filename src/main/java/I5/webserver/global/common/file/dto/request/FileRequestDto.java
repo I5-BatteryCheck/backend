@@ -34,6 +34,10 @@ public class FileRequestDto {
 
     private Double pollutionLevel;
 
+    private List<Double> frequencies;
+
+    private List<Double> magnitudes;
+
     private List<CameraDefectsDto> cameraDefects;
 
 }
