@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,5 +103,15 @@ public class BatteryService {
             recentDates.add(today.minusDays(i));
         }
         return recentDates;
+    }
+
+    public List<Battery> findYesterDayBatteries() {
+        LocalDateTime startOfYesterday = LocalDateTime.now()
+                .minusDays(1)
+                .truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endOfYesterday = startOfYesterday
+                .plusDays(1)
+                .minusSeconds(1);
+        return batteryRepository.findBatteriesByTestDateBetween(startOfYesterday, endOfYesterday);
     }
 }

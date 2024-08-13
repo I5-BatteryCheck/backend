@@ -1,10 +1,10 @@
 package I5.webserver.domain.Battery.Entity;
 
+import I5.webserver.domain.Pulse.entity.Pulse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,4 +47,7 @@ public class Battery {
 
     @Column(nullable = false)
     private Double pollutionLevel;
+
+    @OneToOne
+    private Pulse pulse;
 }
