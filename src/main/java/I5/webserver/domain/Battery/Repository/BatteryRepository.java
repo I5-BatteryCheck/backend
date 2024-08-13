@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface BatteryRepository extends JpaRepository<Battery, Long> {
@@ -27,4 +28,6 @@ public interface BatteryRepository extends JpaRepository<Battery, Long> {
             "FROM Battery b " +
             "WHERE b.testDate >= :startDate AND b.testDate <= :endDate")
     BatteryConditionResponseDto findBatteryConditionAverage(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    List<Battery> findBatteriesByTestDateBetween(LocalDateTime start, LocalDateTime end);
 }
