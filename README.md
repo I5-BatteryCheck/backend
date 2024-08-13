@@ -9,7 +9,7 @@
 - **API Documentation**: Swagger
 
 ## package 구조
-```
+`````plaintext
 domain/
 ├── Battery
 │   ├── controller
@@ -46,7 +46,7 @@ global/
 │       └── service
 ├── config
 └── util
-```
+`````
 
 ## 도메인
 
