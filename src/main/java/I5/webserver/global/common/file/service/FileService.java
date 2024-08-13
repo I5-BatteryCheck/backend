@@ -8,6 +8,8 @@ import I5.webserver.domain.Defect.Entity.Defect;
 import I5.webserver.domain.Defect.Service.DefectService;
 import I5.webserver.domain.Picture.Entity.Picture;
 import I5.webserver.domain.Picture.Service.PictureService;
+import I5.webserver.domain.Pulse.entity.Pulse;
+import I5.webserver.domain.Pulse.service.PulseService;
 import I5.webserver.global.Util.FileUtils;
 import I5.webserver.global.common.file.dto.request.FileDto;
 import I5.webserver.global.common.file.dto.request.FileRequestDto;
@@ -32,6 +34,7 @@ public class FileService {
     private final PictureService pictureService;
     private final BatteryService batteryService;
     private final DefectService defectService;
+    private final PulseService pulseService;
 
     @Transactional(rollbackFor = {EntityNotFoundException.class})
     public List<Long> save(FileDto fileDto, FileRequestDto requestDto, Long batteryId) throws EntityNotFoundException{
@@ -51,6 +54,14 @@ public class FileService {
                     .build();
             batteryService.save(battery);
         }
+        Pulse pulse = Pulse.builder()
+                .battery(battery)
+                .frequency(requestDto.getFrequencies())
+                .magnitude(requestDto.getMagnitudes())
+                .build();
+        pulseService.save(pulse);
+        battery.setPulse(pulse);
+        batteryService.save(battery);
         List<CameraDefectsDto> cameraDefectsDtos = requestDto.getCameraDefects();
         int sequence = 0;
         for (CameraDefectsDto cameraDefectsDto : cameraDefectsDtos) {
