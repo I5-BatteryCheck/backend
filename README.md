@@ -1,14 +1,15 @@
-# I5 backend 파트입니다.
+# I5 Backend 파트입니다.
 
 ## 사용 기술
-Framework : **Spring boot**
-ORM : **Jpa**
-Build : **Gradle**
-RDBMS : **MySQL**
-file upload and download : **AWS S3**
-api docs : **Swagger**
+- **Framework**: Spring Boot
+- **ORM**: JPA
+- **Build Tool**: Gradle
+- **RDBMS**: MySQL
+- **File Upload and Download**: AWS S3
+- **API Documentation**: Swagger
 
 ## package 구조
+```
 domain/
 ├── Battery
 │   ├── controller
@@ -45,10 +46,12 @@ global/
 │       └── service
 ├── config
 └── util
+```
 
 ## 도메인
-Battery
-Picture
-Defect
-Pulse
-File
+
+- **Battery**
+- **Picture**
+- **Defect**
+- **Pulse**
+- **File**
