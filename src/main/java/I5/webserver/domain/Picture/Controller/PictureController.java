@@ -51,7 +51,7 @@ public class PictureController {
         Picture picture = images.get(0).getPicture();
         Long batteryId = picture.getBattery().getId();
         LocalDateTime localDateTime = picture.getBattery().getTestDate();
-        List<Type> defectTypes = picture.getDefects().stream().map(Defect::getType).toList();
+        List<Type> defectTypes = picture.getDefects().stream().map(Defect::getType).distinct().toList();
         Result result = picture.getBattery().getResult();
         return ApiResponse.success(new PictureWebResponseDto(batteryId, encodedImages, defectTypes, localDateTime, result));
     }
