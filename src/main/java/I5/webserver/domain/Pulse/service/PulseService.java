@@ -27,7 +27,10 @@ public class PulseService {
     public PulseResponse getPulseAverageFromYesterday() {
         List<Battery> batteries = batteryService.findYesterDayBatteries();
         List<Double> frequencies = batteries.get(0).getPulse().getFrequency();
-        return new PulseResponse(calculateMagnitudesAverage(batteries), frequencies);
+        List<Double> roundedFrequencies = frequencies.stream()
+                .map(frequency -> Math.round(frequency * 10) / 10.0)
+                .toList();
+        return new PulseResponse(calculateMagnitudesAverage(batteries), roundedFrequencies);
     }
 
     public List<Double> calculateMagnitudesAverage(List<Battery> batteries) {
